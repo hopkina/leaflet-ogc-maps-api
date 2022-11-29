@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Leaflet.ImageOverlay.OGCAPI example</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet/dist/leaflet.css"
+			crossorigin=""
+		/>
+		<script
+			src="https://unpkg.com/leaflet/dist/leaflet-src.js"
+			crossorigin=""
+		></script>
+        <script 
+            src='https://unpkg.com/leaflet-imageoverlay-ogcapi@0.1.0/Leaflet.ImageOverlay.OGCAPI.js'
+        >
+        </script>
+	</head>
+	<body>
+		<div id="map" style="width: 700px; height: 700px"></div>
+
+		<script type="text/javascript">
+			const map = new L.Map("map", {
+				center: [55.8, -4],
+				zoom: 5.4,
+                zoomSnap: 0.2,
+				minZoom: 2,
+			});
+
+			const positron = L.tileLayer(
+				"https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.png",
+				{
+					attribution:
+						'&copy; Map tiles by Stamen Design, under CC BY 3.0. Data by <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, under ODbL',
+					maxNativeZoom: 18,
+					maxZoom: 24,
+				}
+			).addTo(map);
+
+            const blueMarble = L.imageOverlay.ogcapi("https://maps.gnosis.earth/ogcapi/", {
+				collection: "blueMarble",
+			}).addTo(map);
+
+			const nasaLights = L.imageOverlay.ogcapi( "https://maps.gnosis.earth/ogcapi/", {
+				collection: "lights",
+			});
+
+			const openMapLocalWoodland = L.imageOverlay.ogcapi("https://maps.gnosis.earth/ogcapi/", {
+				collection: "OpenMapLocal:Woodland",
+				transparent: true,
+            });
+
+			L.control.layers({}, {
+                "Blue Marble": blueMarble,
+				"Earth at Night": nasaLights,
+				"Open Map Local - Woodland": openMapLocalWoodland,
+			},{ collapsed: false }).addTo(map);
+
+		</script>
+	</body>
+</html>
